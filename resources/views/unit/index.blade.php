@@ -1,0 +1,7 @@
+@extends('layouts.app')
+@section('title', 'Unit')
+@section('content')
+<div class="mb-4 flex items-center justify-between"><h1 class="text-2xl font-bold">Unit Kontrakan</h1><a href="{{ route('unit.create') }}" class="rounded bg-slate-900 px-3 py-2 text-white">Tambah</a></div>
+<form class="mb-4 flex flex-wrap gap-2"><input name="q" value="{{ request('q') }}" placeholder="Cari nomor unit" class="rounded border px-3 py-2"><select name="status" class="rounded border px-3 py-2"><option value="">Semua status</option>@foreach(['kosong','terisi','perbaikan'] as $s)<option value="{{ $s }}" @selected(request('status')===$s)>{{ ucfirst($s) }}</option>@endforeach</select><button class="rounded bg-slate-700 px-4 py-2 text-white">Filter</button></form>
+<div class="overflow-hidden rounded bg-white shadow"><table class="w-full text-left text-sm"><thead class="bg-slate-100"><tr><th class="p-3">Unit</th><th class="p-3">Lokasi</th><th class="p-3">Tarif</th><th class="p-3">Status</th><th class="p-3">Aksi</th></tr></thead><tbody>@forelse($units as $unit)<tr class="border-t"><td class="p-3 font-medium">{{ $unit->nomor_unit }}</td><td class="p-3">{{ $unit->lokasi->nama }}</td><td class="p-3">Rp {{ number_format($unit->tarif_sewa,0,',','.') }}</td><td class="p-3">{{ $unit->statusLabel() }}</td><td class="p-3"><a class="text-blue-700" href="{{ route('unit.edit',$unit) }}">Edit</a></td></tr>@empty<tr><td colspan="5" class="p-4">Belum ada unit.</td></tr>@endforelse</tbody></table></div><div class="mt-4">{{ $units->links() }}</div>
+@endsection
